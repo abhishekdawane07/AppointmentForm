@@ -1,0 +1,57 @@
+<template>
+  <lightning-card title="Appointment Form">
+      <div class="slds-p-around_medium">
+          <lightning-record-edit-form object-api-name="Appointment_Details__c">
+              <div class="slds-grid slds-gutters">
+                  <!-- First Column: Contact -->
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning-input-field field-name="Contact__c" required onchange={handleContact}></lightning-input-field>
+                  </div>
+
+                  <!-- Second Column: Subject -->
+                  <div class="slds-col slds-size_1-of-2">
+                      <lightning-input label="Subject" type="text" required onchange={handleSubject}></lightning-input>
+                  </div>
+              </div>
+          </lightning-record-edit-form>
+
+          <p>Appointment Date and Time</p>
+          <div class="slds-grid slds-gutters">
+              <div class="slds-col slds-size_2-of-6">
+                  <div class="slds-grid slds-gutters">
+                      <div class="slds-col">
+                          <lightning-input label="Appointment Date" type="date" required onchange={handleDate}></lightning-input>
+                      </div>
+                      <div class="slds-col">
+                          <lightning-input label="Appointment Time" type="time" required onchange={handleTime}></lightning-input>
+                      </div>
+                  </div>
+
+                  <div class="slds-col">
+                      <lightning-button variant="brand" label="Check Availability" required onclick={fetchAvailableSlots}></lightning-button>
+                  </div>
+              </div>
+
+              <div class="slds-col slds-size_1-of-6"></div>
+
+              <div class="slds-col slds-size_3-of-6">
+                  <lightning-textarea label="Description"  required onchange={handleDescription}></lightning-textarea>
+              </div>
+          </div>
+
+          <div class="slds-m-top_medium slds-align_absolute-center">
+              <lightning-button variant="brand" type="submit" label="Book Appointment" onclick={handleBookAppointment}></lightning-button>
+          </div>
+      </div>
+  </lightning-card>
+
+  <template if:true={isAvailableSlot}>
+      <lightning-card title="Available Appointment Slot">
+          <lightning-datatable
+              key-field="id"
+              data={availableSlots}
+              columns={columns}>
+          </lightning-datatable>
+      </lightning-card>
+  </template>
+</template>
